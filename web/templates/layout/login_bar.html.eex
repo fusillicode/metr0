@@ -1,0 +1,5 @@
+<%= if @current_user do %>
+  <%= link "Logout", to: auth_path(@conn, :logout), method: :delete, class: "btn btn-danger" %>
+<% else %>
+  <%= link "Login", to: auth_path(@conn, :login, "identity"), class: "btn btn-primary"%>
+<% end %>
