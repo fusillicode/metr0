@@ -6,8 +6,8 @@ defmodule Metr0.Repo.Migrations.CreateAuthorization do
       add :provider, :string
       add :uid, :string
       add :user_id, references(:users, on_delete: :nothing)
-      add :token, :string
-      add :refresh_token, :string
+      add :token, :text
+      add :refresh_token, :text
       add :expires_at, :bigint
 
       timestamps()
