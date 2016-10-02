@@ -1,5 +1,7 @@
 defmodule Metr0 do
   use Application
+  alias Metr0.Repo
+  alias Metr0.Endpoint
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
@@ -9,9 +11,9 @@ defmodule Metr0 do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(Metr0.Repo, []),
+      supervisor(Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Metr0.Endpoint, []),
+      supervisor(Endpoint, []),
       # Start your own worker by calling: Metr0.Worker.start_link(arg1, arg2, arg3)
       # worker(Metr0.Worker, [arg1, arg2, arg3]),
     ]
@@ -25,7 +27,7 @@ defmodule Metr0 do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    Metr0.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end

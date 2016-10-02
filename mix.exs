@@ -48,6 +48,7 @@ defmodule Metr0.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
+     {:credo, "~> 0.4", only: [:dev, :test]},
      {:guardian, "~> 0.13.0"},
      {:guardian_db, "~> 0.7"},
      {:ueberauth, "~> 0.3"},

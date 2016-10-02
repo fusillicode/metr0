@@ -4,9 +4,9 @@ defmodule Metr0.GuardianSerializer do
   alias Metr0.Repo
   alias Metr0.User
 
-  def for_token(user = %User{}), do: { :ok, "User:#{user.id}" }
-  def for_token(_), do: { :error, "Unknown resource type" }
+  def for_token(user = %User{}), do: {:ok, "User:#{user.id}"}
+  def for_token(_), do: {:error, "Unknown resource type"}
 
-  def from_token("User:" <> id), do: { :ok, Repo.get(User, id) }
-  def from_token(_), do: { :error, "Unknown resource type" }
+  def from_token("User:" <> id), do: {:ok, Repo.get(User, id)}
+  def from_token(_), do: {:error, "Unknown resource type"}
 end

@@ -7,6 +7,10 @@ defmodule Metr0.AuthController do
   use Metr0.Web, :controller
 
   alias Metr0.UserFromAuth
+  alias Metr0.User
+  alias Ecto.Model
+  alias Guardian.Permissions, as: GuardianPermissions
+  alias Guardian.Plug, as: GuardianPlug
 
   plug Ueberauth
 
@@ -25,7 +29,7 @@ defmodule Metr0.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Signed in as #{user.name}")
-        |> Guardian.Plug.sign_in(user, :access, perms: %{default: Guardian.Permissions.max})
+        |> GuardianPlug.sign_in(user, :access, perms: %{default: GuardianPermissions.max})
         |> redirect(to: page_path(conn, :index))
       {:error, reason} ->
         conn
@@ -41,7 +45,7 @@ defmodule Metr0.AuthController do
       # We could use sign_out(:default) to just revoke this token
       # but I prefer to clear out the session. This means that because we
       # use tokens in two locations - :default and :admin - we need to load it (see above)
-      |> Guardian.Plug.sign_out
+      |> GuardianPlug.sign_out
       |> put_flash(:info, "Signed out")
       |> redirect(to: "/")
     else
@@ -52,9 +56,10 @@ defmodule Metr0.AuthController do
   end
 
   defp auths(nil), do: []
-  defp auths(%Metr0.User{} = user) do
-    Ecto.Model.assoc(user, :authorizations)
-      |> Repo.all
-      |> Enum.map(&(&1.provider))
+  defp auths(%User{} = user) do
+    user
+    |> Model.assoc(:authorizations)
+    |> Repo.all
+    |> Enum.map(&(&1.provider))
   end
 end
