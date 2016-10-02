@@ -114,30 +114,38 @@ defmodule Metr0.UserFromAuth do
   end
 
   defp auth_and_validate(%{provider: :identity} = auth, repo) do
-    case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
-      nil -> {:error, :not_found}
-      authorization ->
-        case auth.credentials.other.password do
-          pass when is_binary(pass) ->
-            if Comeonin.Bcrypt.checkpw(auth.credentials.other.password, authorization.token) do
-              authorization
-            else
-              {:error, :password_does_not_match}
-            end
-          _ -> {:error, :password_required}
-        end
+    if nil == uid_from_auth(auth) do
+      {:error, :not_found}
+    else
+      case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
+        nil -> {:error, :not_found}
+        authorization ->
+          case auth.credentials.other.password do
+            pass when is_binary(pass) ->
+              if Comeonin.Bcrypt.checkpw(auth.credentials.other.password, authorization.token) do
+                authorization
+              else
+                {:error, :password_does_not_match}
+              end
+            _ -> {:error, :password_required}
+          end
+      end
     end
   end
 
   defp auth_and_validate(%{provider: service} = auth, repo)  when service in [:google, :facebook, :github] do
-    case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
-      nil -> {:error, :not_found}
-      authorization ->
-        if authorization.uid == uid_from_auth(auth) do
-          authorization
-        else
-          {:error, :uid_mismatch}
-        end
+    if nil == uid_from_auth(auth) do
+      {:error, :not_found}
+    else
+      case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
+        nil -> {:error, :not_found}
+        authorization ->
+          if authorization.uid == uid_from_auth(auth) do
+            authorization
+          else
+            {:error, :uid_mismatch}
+          end
+      end
     end
   end
 

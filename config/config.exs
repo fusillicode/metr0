@@ -28,7 +28,7 @@ config :guardian, Guardian,
   ttl: { 30, :days },
   verify_issuer: true,
   secret_key: to_string(Mix.env),
-  serializer: MyApp.GuardianSerializer,
+  serializer: Metr0.GuardianSerializer,
   hooks: GuardianDb,
   permissions: %{
     default: [
