@@ -29,12 +29,17 @@ defmodule Metr0.Web do
   def controller do
     quote do
       use Phoenix.Controller
+      use Guardian.Phoenix.Controller
 
       alias Metr0.Repo
+      alias Guardian.Plug.EnsureAuthenticated
+      alias Guardian.Plug.EnsurePermissions
+
       import Ecto
       import Ecto.Query
 
       import Metr0.Router.Helpers
+      import Metr0.Controller.Helpers
       import Metr0.Gettext
     end
   end
@@ -51,6 +56,7 @@ defmodule Metr0.Web do
 
       import Metr0.Router.Helpers
       import Metr0.ErrorHelpers
+      import Metr0.ViewHelpers
       import Metr0.Gettext
     end
   end
