@@ -22,6 +22,34 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Configure Guardian
+config :guardian, Guardian,
+  issuer: "Metr0.#{Mix.env}",
+  ttl: { 30, :days },
+  verify_issuer: true,
+  secret_key: to_string(Mix.env),
+  serializer: MyApp.GuardianSerializer,
+  hooks: GuardianDb,
+  permissions: %{
+    default: [
+      :read_profile,
+      :write_profile,
+      :read_token,
+      :revoke_token,
+    ],
+  }
+
+# Configure GuardianDb
+config :guardian_db, GuardianDb,
+  repo: PhoenixGuardian.Repo,
+  sweep_interval: 60
+
+# Configure Ueberauth
+config :ueberauth, Ueberauth,
+  providers: [
+    identity: {Ueberauth.Strategy.Identity, [callback_methods: ["POST"]]}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

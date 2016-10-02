@@ -36,8 +36,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :metr0, Metr0.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "dev",
+  password: "el0pm3nt",
   database: "metr0_dev",
   hostname: "localhost",
   pool_size: 10
