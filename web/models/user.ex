@@ -5,7 +5,18 @@ defmodule Metr0.User do
     field :name, :string
     field :email, :string
 
+    has_many :authorizations, PhoenixGuardian.Authorization
+
     timestamps()
+  end
+
+  @required_fields ~w(email name)a
+  @optional_fields ~w()a
+
+  def registration_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, @required_fields)
+    |> validate_required(@required_fields)
   end
 
   @doc """
@@ -13,7 +24,8 @@ defmodule Metr0.User do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :email])
-    |> validate_required([:name, :email])
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
+    |> validate_format(:email, ~r/@/)
   end
 end
