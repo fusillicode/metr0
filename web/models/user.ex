@@ -5,7 +5,7 @@ defmodule Metr0.User do
     field :name, :string
     field :email, :string
 
-    has_many :authorizations, PhoenixGuardian.Authorization
+    has_many :authorizations, Metr0.Authorization
 
     timestamps()
   end

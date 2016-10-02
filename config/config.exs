@@ -41,7 +41,7 @@ config :guardian, Guardian,
 
 # Configure GuardianDb
 config :guardian_db, GuardianDb,
-  repo: PhoenixGuardian.Repo,
+  repo: Metr0.Repo,
   sweep_interval: 60
 
 # Configure Ueberauth
